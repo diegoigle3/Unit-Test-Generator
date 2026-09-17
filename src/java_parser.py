@@ -13,19 +13,19 @@ def parse_java_file(file_path: str) -> dict:
         "public_methods": []
     }
 
-    # name
+    # Name
     for path, node in tree.filter(javalang.tree.ClassDeclaration):
         info["class_name"] = node.name
         break 
 
-    # parameters
+    # Parameters
     for path, node in tree.filter(javalang.tree.ConstructorDeclaration):
         #we only want the constructor with the most parameters, so we check if the current constructor has more parameters than the previous one
         actual_parameters = [param.type.name for param in node.parameters]
         if len(actual_parameters) > len(info["parameters"]):
             info["parameters"] = actual_parameters
 
-    #methods
+    # Public Methods
     for path, node in tree.filter(javalang.tree.MethodDeclaration):
         if node.modifiers and "public" in node.modifiers:
             info["public_methods"].append({
