@@ -1,42 +1,42 @@
 public class ServicioUsuario {
 
-    private RepositorioUsuario repositorio;
-    private NotificadorEmail notificador;
-    private Encriptador encriptador;
+    private UserRepository repository;
+    private EmailNotifier notifier;
+    private Encryptor encryptor;
 
-    public ServicioUsuario(RepositorioUsuario repositorio, NotificadorEmail notificador, Encriptador encriptador) {
-        this.repositorio = repositorio;
-        this.notificador = notificador;
-        this.encriptador = encriptador;
+    public ServicioUsuario(UserRepository repository, EmailNotifier notifier, Encryptor encryptor) {
+        this.repository = repository;
+        this.notifier = notifier;
+        this.encryptor = encryptor;
     }
 
-    public boolean registrarUsuario(String username, String email, String password) {
-        if (repositorio.existePorUsername(username)) {
-            throw new IllegalArgumentException("El usuario ya existe en el sistema.");
+    public boolean registerUser(String username, String email, String password) {
+        if (repository.existePorUsername(username)) {
+            throw new IllegalArgumentException("The user already exists in the system.");
         }
 
-        String hashPassword = encriptador.hash(password);
+        String hashPassword = encryptor.hash(password);
         Usuario nuevo = new Usuario(username, email, hashPassword);
         
-        boolean guardado = repositorio.guardar(nuevo);
+        boolean guardado = repository.guardar(nuevo);
         
         if (guardado) {
-            notificador.enviarMensajeBienvenida(email);
+            notifier.enviarMensajeBienvenida(email);
         }
         
         return guardado;
     }
 
-    public void darDeBaja(Long id) {
-        Usuario usuario = repositorio.buscarPorId(id);
+    public void deleteUser(Long id) {
+        Usuario usuario = repository.buscarPorId(id);
         if (usuario == null) {
-            throw new RuntimeException("Usuario no encontrado.");
+            throw new RuntimeException("User not found.");
         }
-        repositorio.eliminar(usuario);
-        notificador.enviarMensajeDespedida(usuario.getEmail());
+        repository.eliminar(usuario);
+        notifier.enviarMensajeDespedida(usuario.getEmail());
     }
     
-    private void auditar(String accion) {//parser should ignore this method
-        System.out.println("Auditando: " + accion);
+    private void audit(String action) {//parser should ignore this method
+        System.out.println("Auditing: " + action);
     }
 }

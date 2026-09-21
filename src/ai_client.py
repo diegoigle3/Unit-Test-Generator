@@ -11,23 +11,23 @@ def generate_test_code(parsed_info: dict, api_key: str) -> str:
 
     # Prompt for the AI model
     prompt = f"""
-    Eres un desarrollador experto en Java especializado en pruebas unitarias.
-    Tu tarea es escribir el código completo de una clase de test para JUnit 5 usando Mockito.
+    You are an expert Java developer specialized in unit testing.
+    Your task is to write the complete code for a JUnit 5 test class using Mockito.
 
-    Aquí tienes la información de la clase a testear:
-    - Nombre de la clase: {class_name}
-    - Parámetros requeridos por su constructor: {parameters}
-    - Métodos públicos que debes testear: {public_methods}
+    Here is the information for the class to be tested:
+    - Class name: {class_name}
+    - Parameters required by its constructor: {parameters}
+    - Public methods to test: {public_methods}
 
-    REGLAS ESTRICTAS:
-    1. Analiza los "Parámetros requeridos". Crea un @Mock SOLO para las dependencias complejas. Para tipos primitivos (int, boolean) o clases estándar (String), inyecta valores de prueba razonables manualmente.
-    2. Usa @InjectMocks si es posible, o instancia la clase manualmente pasando los mocks.
-    3. Cubre casos de éxito (happy path) y de error.
-    4. Aplica el patrón Given-When-Then usando los comentarios // Given, // When, // Then, CON LAS SIGUIENTES EXCEPCIONES:
-    - Tests de excepciones: Fusiona el When y Then dentro de assertThrows.
-    - Funciones triviales/matemáticas: Omite los comentarios si el test se resuelve en una sola línea.
-    - Tests parametrizados (@ParameterizedTest): Omite el Given ya que los datos se inyectan.
-    5. DEVUELVE ÚNICAMENTE CÓDIGO JAVA. No incluyas explicaciones ni bloques de markdown (```java). El output debe ser puro y compilable.
+    STRICT RULES:
+    1. Analyze the "Parameters required". Create a @Mock ONLY for complex dependencies. For primitive types (int, boolean) or standard classes (String), manually inject reasonable test values.
+    2. Use @InjectMocks if possible, or instantiate the class manually passing the mocks.
+    3. Cover both success (happy path) and error cases.
+    4. Apply the Given-When-Then pattern using the comments // Given, // When, // Then, WITH THE FOLLOWING EXCEPTIONS:
+    - Exception tests: Merge When and Then within assertThrows.
+    - Trivial/mathematical functions: Omit the comments if the test is resolved in a single line.
+    - Parameterized tests (@ParameterizedTest): Omit the Given comment since data is injected.
+    5. RETURN ONLY JAVA CODE. Do not include explanations or markdown blocks (```java). The output must be pure and compilable.
     """
     
     # Call Gemini API
